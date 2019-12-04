@@ -6,6 +6,40 @@
 #include <errno.h>
 #include <sys/wait.h>
 
+
+int execute(){
+  //getting input
+  print_prompt();
+  char input[256];
+  char *error_catch = fgets(input, 256, stdin);
+  if (error_catch == '\0'){
+    printf("error in execute's fgets!\n");
+  }
+  //doing what input says based on switch
+  int type = type_arg(input);
+  switch(type) {
+    case 0:
+      single_space(input);
+      break;
+    case 1:
+      //colon_();
+      break;
+    case 2:
+      //greater_than();
+      break;
+    case 3:
+      //less_than();
+      break;
+    case 4:
+      //pipe();
+      break;
+    default:
+      printf("Command format cannot be executed. Quitting...\n");
+      exit(1);
+  }
+  return 0;
+}
+
 void print_prompt(){
   char *cwd = NULL;
   cwd = getcwd(cwd, 256);
@@ -34,17 +68,28 @@ int type_arg(char * input){
   }
 }
 
-int execute(){
-  //getting input
-  print_prompt();
-  char input[256];
-  char *error_catch = fgets(input, 256, stdin);
-  if (error_catch == '\0'){
-    printf("error in execute's fgets!\n");
+int single_space(char * input){
+
+  //first parse
+  // then check if input is exit or cd
+  //then fork, do execvp in child and wait in parent
+
+  int size = 1;
+  char *input_args[20];//should we be mallocing more space so it's dynamic? I don't think more than 20 args will ever be inputted but we can change this later
+  while (*input!='\0'){
+    input_args[size-1] = strsep(&input, " \t\n");
+    size++;
   }
-  //doing what input says based on switch
-  printf("this is input: %s", input);
-  int type = type_arg(input);
-  printf("this is the type of input: %d\n", type);
+  input_args[size] = NULL;
+
+  //for exit and cd
+  if (strcmp("exit", input_args[0]) == 0){
+    exit(0); // exit the program
+  }
+  if (strcmp("cd", input_args[0])==0){
+    //do this later
+  }else{ //shouldn't try to do anything after the cd
+    //
+  }
   return 0;
 }

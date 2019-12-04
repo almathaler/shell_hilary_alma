@@ -7,6 +7,8 @@
 #include <sys/wait.h>
 
 int main(){
-  execute();
+//  while(1){
+    execute();
+//  }
   return 0;
 }

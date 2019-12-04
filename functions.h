@@ -2,9 +2,8 @@
 #define functions_h
 //REMEMBER 0 IS FALSE AND 1 IS TRUE
 /*
-the main execute function, does everything from prompt to fgets to type_arg, then
-actually doing the command (fork with wait at the end or something else for cd or exit)
-. will be in a loop in main that is while(0).
+the main execute function, has big switch so after getting and typing input, directs
+to certain function
 outline:
 printf("(cwd)/# ") <- this can be a function in itself
 *char input;
@@ -58,9 +57,9 @@ int less_than(char *input);
 */
 int pipe_(char *input);
 /*
-*/
+
 int change_directory(char *input);
-/*
-*/
 int exit_this(char *input);
+
+*/
 #endif
