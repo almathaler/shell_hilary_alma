@@ -22,7 +22,7 @@ int execute(){
       single_space(input);
       break;
     case 1:
-      //colon_();
+      colon_(input);
       break;
     case 2:
       //greater_than();
@@ -46,7 +46,7 @@ void print_prompt(){
   cwd = getcwd(cwd, 256);
   //for future reference for what you print, strsep by '/' a nd the print last token and at the
   //first do ~/ I guess
-  printf("*cwd: %s\n", cwd);
+  //printf("*cwd: %s\n", cwd);
   if (*cwd == '\0'){
     printf("error in print_prompt!\terrno:%d\tstrerror:%s\n", errno, strerror(errno));
   }
@@ -111,6 +111,28 @@ int single_space(char * input){
         printf("Something wrong with execvp! errno:%d\tstrerror:%s\n", errno, strerror(errno));
       }
     }
+  }
+  return 0;
+}
+
+int colon_(char *input){
+  //ok so parse input based on ;, end up with array of single space inputs and last entry should be NULL
+  //then, make iterator int and have loop that is while (arg[i] != NULL).
+  //inside that loop, do single_space for each value inside that array
+
+  //parse
+  int size = 1;
+  char *input_args[20];//should we be mallocing more space so it's dynamic? I don't think more than 20 args will ever be inputted but we can change this later
+  while (*input!='\0'){
+    input_args[size-1] = strsep(&input, ";"); //note be wary, might be that "ls -l ; cd ../" means empty char will be created?
+    size++;
+  }
+  input_args[size-1] = NULL;
+  //
+  int i = 0;
+  while(input_args[i] != NULL){
+    single_space(input_args[i]);
+    i++;
   }
   return 0;
 }
