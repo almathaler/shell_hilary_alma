@@ -23,15 +23,17 @@ void print_prompt();
 /*
 so this will take in the input (checks to see what type of
 argument you put in, then returns an int to represent it)
-1 - single space
-2 - there's a colon ("ls -l; cd dir")
-3 - the > argument
-4 - the < argument
-5 - the |
-6 - cd
-7 - exit
+0 - single space
+1 - there's a colon ("ls -l; cd dir")
+2 - the > argument
+3 - the < argument
+4 - the |
+5 - cd -- ACTUALLY NO SINGLE_SPACE WILL DEAL W THIS
+6 - exit
+12/3 CURRENTLY VERY BASIC ONLY ONE OPERATOR PLS UNLESS SEPERATED BY ;!
 */
 int type_arg(char * input);
+
 /*
 1 - single space. returns 0 just to see if it works
 */
@@ -45,7 +47,7 @@ wait. then at the end of that, the original colon function will take over and do
 since at the start of this function there was a wait() to the parent function, after the colon's kid is done, the colon's fork will be done
 and we will go back to execute()
 */
-int colon_(char *input);
+int colon_(char *input); //REMEMBER THAT COLON STUFF (sorry for caps) might have other operators within them. so do type_args again w/ individual pieces
 /*
 */
 int greater_than(char *input);
