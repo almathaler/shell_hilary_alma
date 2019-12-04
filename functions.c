@@ -12,7 +12,7 @@ int execute(){
   print_prompt();
   char input[256];
   char *error_catch = fgets(input, 256, stdin);
-  if (error_catch == '\0'){
+  if (*error_catch == '\0'){
     printf("error in execute's fgets!\n");
   }
   //doing what input says based on switch
@@ -92,8 +92,8 @@ int single_space(char * input){
     //fork, do execvp
     int f = fork(); //create child branch
     if (f){ //just wait
-      int *status; //for wait and error checking
-      waitpid(f, status, 0); //if options is 0, will work normally
+      int status; //for wait and error checking
+      waitpid(f, &status, 0); //if options is 0, will work normally
       if (errno != 0){
         printf("uh oh! child exited wonkily. Reaping...\n");
         int exited = WIFEXITED(status);
@@ -101,6 +101,7 @@ int single_space(char * input){
         printf("exited normally (0 means no)? %d\treturn val: %d\n", exited, return_val_child);
       }
     }else{
+      printf("testing before execvp, ia[0]: %s\n", input_args[0]);
       if (execvp(input_args[0], input_args) == -1){
         printf("Something wrong with execvp! errno:%d\tstrerror:%s\n", errno, strerror(errno));
       }
