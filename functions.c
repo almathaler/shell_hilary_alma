@@ -80,7 +80,7 @@ int single_space(char * input){
     input_args[size-1] = strsep(&input, " \t\n");
     size++;
   }
-  input_args[size] = NULL;
+  input_args[size-1] = NULL;
 
   //for exit and cd
   if (strcmp("exit", input_args[0]) == 0){
@@ -101,7 +101,6 @@ int single_space(char * input){
         printf("exited normally (0 means no)? %d\treturn val: %d\n", exited, return_val_child);
       }
     }else{
-      printf("testing before execvp, ia[0]: %s\n", input_args[0]);
       if (execvp(input_args[0], input_args) == -1){
         printf("Something wrong with execvp! errno:%d\tstrerror:%s\n", errno, strerror(errno));
       }
