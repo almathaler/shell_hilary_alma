@@ -44,9 +44,10 @@ void print_prompt(){
   char *cwd = NULL;
   //errno = 0;
   cwd = getcwd(cwd, 256);
-  //for future reference for what you print, strsep by '/' and the print last token and at the
+  //for future reference for what you print, strsep by '/' a nd the print last token and at the
   //first do ~/ I guess
-  if (cwd == '\0'){
+  printf("*cwd: %s\n", cwd);
+  if (*cwd == '\0'){
     printf("error in print_prompt!\terrno:%d\tstrerror:%s\n", errno, strerror(errno));
   }
   printf("%s@", cwd);
@@ -90,7 +91,9 @@ int single_space(char * input){
   if (strcmp("cd", input_args[0])==0){
     //do this later
     printf("%s\n", input_args[1]);
-    chdir(input_args[1]);
+    //!!!!!!
+    chdir(input_args[1]); //DO ERROR CATCHING HERE
+    //!!!!!
   }else{ //shouldn't try to do anything after the cd
     //fork, do execvp
     int f = fork(); //create child branch
