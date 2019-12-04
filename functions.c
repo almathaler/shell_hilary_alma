@@ -89,7 +89,22 @@ int single_space(char * input){
   if (strcmp("cd", input_args[0])==0){
     //do this later
   }else{ //shouldn't try to do anything after the cd
-    //
+    //fork, do execvp
+    int f = fork(); //create child branch
+    if (f){ //just wait
+      int *status; //for wait and error checking
+      waitpid(f, status, 0); //if options is 0, will work normally
+      if (errno != 0){
+        printf("uh oh! child exited wonkily. Reaping...\n");
+        int exited = WIFEXITED(status);
+        int return_val_child = WEXITSTATUS(status);
+        printf("exited normally (0 means no)? %d\treturn val: %d\n", exited, return_val_child);
+      }
+    }else{
+      if (execvp(input_args[0], input_args) == -1){
+        printf("Something wrong with execvp! errno:%d\tstrerror:%s\n", errno, strerror(errno));
+      }
+    }
   }
   return 0;
 }
