@@ -102,8 +102,8 @@ int single_space(char * input){
     int f = fork(); //create child branch
     if (f){ //just wait
       int status; //for wait and error checking
-      waitpid(f, &status, 0); //if options is 0, will work normally
-      if (errno != 0){
+      //if options is 0, will work normally
+      if (waitpid(f, &status, 0) == -1){
         printf("uh oh! child exited wonkily. Reaping...\n");
         int exited = WIFEXITED(status);
         int return_val_child = WEXITSTATUS(status);
@@ -127,7 +127,7 @@ int colon_(char *input){
   int size = 1;
   char *input_args[20];//should we be mallocing more space so it's dynamic? I don't think more than 20 args will ever be inputted but we can change this later
   printf("in colon_\n");
-  while (input!='\0'){
+  while (*input!='\0'){
     printf("input_args[%d]:\n", (size-1));
     input_args[size-1] = strsep(&input, ";"); //note be wary, might be that "ls -l ; cd ../" means empty char will be created?
     printf("%s\n", input_args[size-1]);
