@@ -80,9 +80,17 @@ int single_space(char * input){
   char *input_args[20];//should we be mallocing more space so it's dynamic? I don't think more than 20 args will ever be inputted but we can change this later
   while (*input!='\0'){
     input_args[size-1] = strsep(&input, " \t\n");
+    if (*input_args[size-1] != '\0'){
     size++;
+    }
   }
-  input_args[size-1] = NULL;
+  input_args[size-1] = '\0';
+  //testing
+  int i;
+  printf("size: %d\n", size);
+  for (i = 0; i<size; i++){
+    printf("input_args[%d]: %sa\n", i, input_args[i]);
+  }
 
   //for exit and cd
   if (strcmp("exit", input_args[0]) == 0){
