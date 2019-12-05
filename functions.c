@@ -129,7 +129,7 @@ int colon_(char *input){
     input_args[size-1] = strsep(&input, ";"); //note be wary, might be that "ls -l ; cd ../" means empty char will be created?
     printf("%s\n", input_args[size-1]);
     printf("how input looks:\n");
-    printf("%s", input);
+    printf("%s\n", input);
     size++;
   }
   printf("trying to catch seg fault\n");
