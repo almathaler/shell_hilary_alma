@@ -75,14 +75,17 @@ int single_space(char * input){
   //first parse
   // then check if input is exit or cd
   //then fork, do execvp in child and wait in parent
-
+  printf("in single spacing\n");
   int size = 1;
   char *input_args[20];//should we be mallocing more space so it's dynamic? I don't think more than 20 args will ever be inputted but we can change this later
   while (*input!='\0'){
+    printf("current input:%s\n", input);
     input_args[size-1] = strsep(&input, " \t\n");
     if (*input_args[size-1] != '\0'){
-    size++;
+      printf("input_args[%d] is not null\n", (size-1));
+      size++;
     }
+    printf("input_args[%d] is null\n", (size-1));
   }
   input_args[size-1] = '\0';
   //testing
