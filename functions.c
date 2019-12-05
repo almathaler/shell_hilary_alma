@@ -90,9 +90,12 @@ int single_space(char * input){
   }
   if (strcmp("cd", input_args[0])==0){
     //do this later
-    printf("%s\n", input_args[1]);
+    //printf("%s\n", input_args[1]);
     //!!!!!!
-    chdir(input_args[1]); //DO ERROR CATCHING HERE
+    int cd_check = chdir(input_args[1]); //DO ERROR CATCHING HERE
+    if (cd_check == -1) {
+      printf("cd failed, check if your directory exists!\n");
+    }
     //!!!!!
   }else{ //shouldn't try to do anything after the cd
     //fork, do execvp
