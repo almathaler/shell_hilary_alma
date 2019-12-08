@@ -7,29 +7,26 @@
 #include <errno.h>
 #include <sys/wait.h>
 
-static void sighandler(int signo){
-  if (signo == SIGSEGV){
-    printf("seg fault! have only put this after \"*input != \'null char\'\" \n");
-    exit(0);
-  }
-}
+
 
 int execute(){
   //getting input
   print_prompt();
-  char input[256];
-  char *error_catch = fgets(input, 256, stdin);
+  char *input[256];
+  char *error_catch = fgets(*input, 256, stdin);
   if (*error_catch == '\0'){
     printf("error in execute's fgets!\n");
+  }else{
+    printf("fgest got: %s\n", input);
   }
   //doing what input says based on switch
-  int type = type_arg(input);
+  int type = type_arg(*input);
   switch(type) {
     case 0:
-      single_space(input);
+      //single_space(input);
       break;
     case 1:
-      colon_(input);
+      //colon_(input);
       break;
     case 2:
       //greater_than();
@@ -77,52 +74,26 @@ int type_arg(char * input){
   }
 }
 
-int single_space(char * input){
-
-  //first parse
-  // then check if input is exit or cd
-  //then fork, do execvp in child and wait in parent
-  printf("in single spacing\n");
+/*
+int single_space(char ** input){
   int size = 1;
-  char *input_args[20];//should we be mallocing more space so it's dynamic? I don't think more than 20 args will ever be inputted but we can change this later
-  while (*input!='\0'){
-    signal(SIGSEGV, sighandler);
-    printf("current input:%s\n", input);
-    input_args[size-1] = strsep(&input, " \t\n");
-    if (*input_args[size-1] != '\0'){
-      printf("input_args[%d] is not null\n", (size-1));
-      size++;
-    }else{
-      printf("input_args[%d] is null\n", (size-1));
-    }
-  }
-  input_args[size-1] = '\0';
-  //testing
-  int i;
-  printf("size: %d\n", size);
-  for (i = 0; i<size; i++){
-    printf("input_args[%d]: %sa\n", i, input_args[i]);
-  }
+  char *input_args[20];
+  //so just have another variable, when that becomes null stop using strsep (means input is now point to null)
 
-  //for exit and cd
+  //
+
   if (strcmp("exit", input_args[0]) == 0){
     exit(0); // exit the program
   }
   if (strcmp("cd", input_args[0])==0){
-    //do this later
-    //printf("%s\n", input_args[1]);
-    //!!!!!!
     int cd_check = chdir(input_args[1]); //DO ERROR CATCHING HERE
     if (cd_check == -1) {
       printf("cd failed, check if your directory exists!\n");
     }
-    //!!!!!
-  }else{ //shouldn't try to do anything after the cd
-    //fork, do execvp
-    int f = fork(); //create child branch
-    if (f){ //just wait
-      int status; //for wait and error checking
-      //if options is 0, will work normally
+  }else{
+    int f = fork();
+    if (f){
+      int status;
       if (waitpid(f, &status, 0) == -1){
         printf("uh oh! child exited wonkily. Reaping...\n");
         int exited = WIFEXITED(status);
@@ -137,7 +108,8 @@ int single_space(char * input){
   }
   return 0;
 }
-
+*/
+/*
 int colon_(char *input){
   //ok so parse input based on ;, end up with array of single space inputs and last entry should be NULL
   //then, make iterator int and have loop that is while (arg[i] != NULL).
@@ -168,3 +140,4 @@ int colon_(char *input){
   }
   return 0;
 }
+*/
