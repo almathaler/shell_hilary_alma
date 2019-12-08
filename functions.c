@@ -7,13 +7,6 @@
 #include <errno.h>
 #include <sys/wait.h>
 
-static void sighandler(int signo){
-  if (signo == SIGSEGV){
-    printf("seg fault! have only put this after \"*input != \'null char\'\" \n");
-    exit(0);
-  }
-}
-
 int execute(){
   //getting input
   print_prompt();
@@ -86,7 +79,6 @@ int single_space(char * input){
   int size = 1;
   char *input_args[20];//should we be mallocing more space so it's dynamic? I don't think more than 20 args will ever be inputted but we can change this later
   while (*input!='\0'){
-    signal(SIGSEGV, sighandler);
     printf("current input:%s\n", input);
     input_args[size-1] = strsep(&input, " \t\n");
     if (*input_args[size-1] != '\0'){
