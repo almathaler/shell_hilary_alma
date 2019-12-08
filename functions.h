@@ -1,5 +1,9 @@
 #ifndef functions_h
 #define functions_h
+
+//hopefully will help with colon
+char ** parse_input(char *input, char *delimiter); //for parsing
+
 //REMEMBER 0 IS FALSE AND 1 IS TRUE
 /*
 the main execute function, has big switch so after getting and typing input, directs

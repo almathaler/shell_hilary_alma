@@ -7,6 +7,23 @@
 #include <errno.h>
 #include <sys/wait.h>
 
+char ** parse_input(char *input, char *delimiter){
+  int size = 10;
+  char **to_return = malloc(10 * sizeof(char *));
+  char *checker = input;
+  int i = 0;
+  while(*checker != '\0'){
+    to_return[i] = strsep(&checker, delimiter);
+    i++;
+    if (i >= 2){
+      size = size * 2;
+      to_return = realloc(to_return, size * sizeof(char *));
+    }
+  }
+  to_return[i] = NULL;
+  return to_return;
+}
+
 int execute(){
   //getting input
   print_prompt();
@@ -71,46 +88,19 @@ int type_arg(char * input){
 }
 
 int single_space(char * input){
+  printf("(SS)input:\"%s\"\n", input);
 
-  //first parse
-  // then check if input is exit or cd
-  //then fork, do execvp in child and wait in parent
-  printf("in single spacing\n");
-  int size = 1;
-  char *input_args[20];//should we be mallocing more space so it's dynamic? I don't think more than 20 args will ever be inputted but we can change this later
-  while (*input!='\0'){
-    printf("current input:%s\n", input);
-    input_args[size-1] = strsep(&input, " \t\n");
-    if (*input_args[size-1] != '\0'){
-      printf("input_args[%d] is not null\n", (size-1));
-      size++;
-    }else{
-      printf("input_args[%d] is null\n", (size-1));
-    }
-  }
-  input_args[size-1] = '\0';
-  //testing
-  int i;
-  printf("size: %d\n", size);
-  for (i = 0; i<size; i++){
-    printf("input_args[%d]: %sa\n", i, input_args[i]);
-  }
+  char **input_args = parse_input(input, " \t\n");
 
-  //for exit and cd
   if (strcmp("exit", input_args[0]) == 0){
     exit(0); // exit the program
   }
   if (strcmp("cd", input_args[0])==0){
-    //do this later
-    //printf("%s\n", input_args[1]);
-    //!!!!!!
     int cd_check = chdir(input_args[1]); //DO ERROR CATCHING HERE
     if (cd_check == -1) {
       printf("cd failed, check if your directory exists!\n");
     }
-    //!!!!!
-  }else{ //shouldn't try to do anything after the cd
-    //fork, do execvp
+  }else{
     int f = fork(); //create child branch
     if (f){ //just wait
       int status; //for wait and error checking
@@ -131,31 +121,20 @@ int single_space(char * input){
 }
 
 int colon_(char *input){
-  //ok so parse input based on ;, end up with array of single space inputs and last entry should be NULL
-  //then, make iterator int and have loop that is while (arg[i] != NULL).
-  //inside that loop, do single_space for each value inside that array
+  char **input_args = parse_input(input, ";\n"); //this might give problems for "ls ; cd", bc if first char is delimiter, strsep makes it null
 
-  //parse
-  int size = 1;
-  char *input_args[20];//should we be mallocing more space so it's dynamic? I don't think more than 20 args will ever be inputted but we can change this later
-  printf("in colon_\n");
-  while (*input!='\0'){
-    printf("input_args[%d]:\n", (size-1));
-    input_args[size-1] = strsep(&input, "\n;"); //note be wary, might be that "ls -l ; cd ../" means empty char will be created?
-    printf("%s\n", input_args[size-1]);
-    //printf("how input looks:\n");
-    //printf("%s\n", input);
-    size++;
-    printf("Finished loop %d\n", (size-1));
-  }
-  printf("trying to catch seg fault\n");
-  input_args[size-1] = NULL;
-  printf("size: %d\tinput_args[%d]: %s\n", size, (size-1), input_args[size-1]);
-  //
   int i = 0;
+/*
+  while (input_args[i] != NULL){
+    printf("input_args[%d]: %s\n", i, input_args[i]);
+    i++;
+  }
+*/
   while(input_args[i] != NULL){
-    printf("should be single_spacing:%s\n", input_args[i]);
-    single_space(input_args[i]);
+    char *copy;
+    strcpy(copy, input_args[i]);
+    printf("should be single_spacing:%s\n", copy);
+    single_space(copy);
     i++;
   }
   return 0;
