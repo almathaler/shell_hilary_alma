@@ -17,7 +17,7 @@ int execute(){
   if (*error_catch == '\0'){
     printf("error in execute's fgets!\n");
   }else{
-    printf("fgest got: %s\n", input);
+    printf("fgest got: %s\n", *input);
   }
   //doing what input says based on switch
   int type = type_arg(*input);
