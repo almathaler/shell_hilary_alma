@@ -88,7 +88,7 @@ int type_arg(char * input){
 }
 
 int single_space(char * input){
-  printf("(SS)input:\"%s\"\n", input);
+  //printf("(SS)input:\"%s\"\n", input);
 
   char **input_args = parse_input(input, " \t\n");
 
@@ -131,9 +131,16 @@ int colon_(char *input){
   }
 */
   while(input_args[i] != NULL){
-    char *copy;
+    char copy[256];
     strcpy(copy, input_args[i]);
-    printf("should be single_spacing:%s\n", copy);
+    //this is why single_space was giving seg faults, in "ls;echo alma" there are no " \t\n" at all. NExt will solve for when space at front by
+    //if white space at start, what to do? i guess should make all strings into char arrays
+    if (strchr(copy, ' ') != strrchr(copy, ' ')){
+      printf("please format your coloned input as \"cmd1;cmd2\"\n");
+      return 0;
+    }
+    strcat(copy, " ");
+    //printf("should be single_spacing:%s\n", copy);
     single_space(copy);
     i++;
   }

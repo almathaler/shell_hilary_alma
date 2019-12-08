@@ -9,7 +9,7 @@
 
 static void sighandler(int signo){
   if (signo == SIGSEGV){
-    printf("seg fault! have only put this after \"*input != \'null char\'\" \n");
+    printf("seg fault!\n");
     exit(0);
   }
 }
