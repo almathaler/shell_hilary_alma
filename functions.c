@@ -43,7 +43,7 @@ int execute(){
       colon_(input);
       break;
     case 2:
-      //greater_than();
+      greater_than(input);
       break;
     case 3:
       //less_than();
@@ -60,11 +60,7 @@ int execute(){
 
 void print_prompt(){
   char *cwd = NULL;
-  //errno = 0;
   cwd = getcwd(cwd, 256);
-  //for future reference for what you print, strsep by '/' a nd the print last token and at the
-  //first do ~/ I guess
-  //printf("*cwd: %s\n", cwd);
   if (*cwd == '\0'){
     printf("error in print_prompt!\terrno:%d\tstrerror:%s\n", errno, strerror(errno));
   }
@@ -125,12 +121,6 @@ int colon_(char *input){
   char **input_args = parse_input(input, ";\n"); //this might give problems for "ls ; cd", bc if first char is delimiter, strsep makes it null
 
   int i = 0;
-/*
-  while (input_args[i] != NULL){
-    printf("input_args[%d]: %s\n", i, input_args[i]);
-    i++;
-  }
-*/
   while(input_args[i] != NULL){
     char copy[256];
     strcpy(copy, input_args[i]);
@@ -149,21 +139,32 @@ int colon_(char *input){
 }
 
 int greater_than(char *input) {
-  char **input_args = parse_input(input, ";\n");
+  printf("in greater than\n");
+  char **input_args = parse_input(input, ">\n");
+  printf("parsed\n");
+  int i = 0;
   while(input_args[i] != NULL){
+    char copy[256];
     strcpy(copy, input_args[i]);
     if (strchr(copy, ' ') != strrchr(copy, ' ')){
       printf("please format your coloned input as \"cmd1>cmd2\"\n");
       return 0;
     }
+    if (i == 0){
+      strcat(input_args[i], " ");
+    }
+    printf("input_args[%d]:\"%s\"\n", i, input_args[i]);
+    i++;
   }
   //Open file
-  int check = open(input_args[1], 0_CREAT | 0_WRONLY);
-  if (cd_check == -1) {
-    printf("opening your file failed\n");
+  int check = open(input_args[1], O_CREAT | O_WRONLY, 0644);
+  printf("check: %d\n", check);
+  if (check == -1) {
+    printf("opening your file failed, strerror: %s\n", strerror(errno));
   }
 
-  dup(1); //Duplicates stdout
-  dup2(getpid(), 1); //Turns stdout into this current process
-  dup2(1, getpid() + 1); //Turns file descriptor 1 back into stdout
+  int backup = dup(1); //Duplicates stdout
+  dup2(check, 1); //Turns stdout into this current process
+  single_space(input_args[0]);
+  dup2(backup, 1);
 }
