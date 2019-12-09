@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 
 char ** parse_input(char *input, char *delimiter){
   int size = 10;
@@ -145,4 +146,24 @@ int colon_(char *input){
     i++;
   }
   return 0;
+}
+
+int greater_than(char *input) {
+  char **input_args = parse_input(input, ";\n");
+  while(input_args[i] != NULL){
+    strcpy(copy, input_args[i]);
+    if (strchr(copy, ' ') != strrchr(copy, ' ')){
+      printf("please format your coloned input as \"cmd1>cmd2\"\n");
+      return 0;
+    }
+  }
+  //Open file
+  int check = open(input_args[1], 0_CREAT | 0_WRONLY);
+  if (cd_check == -1) {
+    printf("opening your file failed\n");
+  }
+
+  dup(1); //Duplicates stdout
+  dup2(getpid(), 1); //Turns stdout into this current process
+  dup2(1, getpid() + 1); //Turns file descriptor 1 back into stdout
 }
