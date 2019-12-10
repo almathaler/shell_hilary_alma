@@ -150,9 +150,6 @@ int greater_than(char *input) {
       printf("please format your coloned input as \"cmd1>cmd2\"\n");
       return 0;
     }
-    if (i == 0){
-      strcat(input_args[i], " ");
-    }
     printf("input_args[%d]:\"%s\"\n", i, input_args[i]);
     i++;
   }
@@ -165,6 +162,9 @@ int greater_than(char *input) {
 
   int backup = dup(1); //Duplicates stdout
   dup2(check, 1); //Turns stdout into this current process
-  single_space(input_args[0]);
+  char process[256];
+  strcat(process, " ");
+  single_space(process);
   dup2(backup, 1);
+  return 0;
 }
