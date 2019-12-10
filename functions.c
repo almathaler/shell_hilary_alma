@@ -91,12 +91,15 @@ int single_space(char * input){
   //if no whitespace, don't parse, means just one command like "ls" from colon or >
   //if whitespace, then parse
   printf("SS input: \"%s\"\n", input);
-
+  char copy[256];
+  strcpy(copy, input);
+  printf("made copy to protect input's relations:\tcopy:\"%s\"\n", copy);
   char **input_args;
-  if (strchr(input, ' ') != NULL || strchr(input, '\t') != NULL || strchr(input, '\n') != NULL){
-    input_args = parse_input(input, " \t\n");
+  if (strchr(copy, ' ') != NULL || strchr(copy, '\t') != NULL || strchr(copy, '\n') != NULL){
+    input_args = parse_input(copy, " \t\n");
   }else{
-    input_args[0] = input;
+    input_args[0] = copy;
+    //this is causing a problem, copy input
     input_args[1] = NULL;
     //parse urself basically (last entry must be null)
   }
@@ -158,7 +161,7 @@ int colon_(char *input){
     //  return 0;
     //}
     printf("input_args[%d]: \"%s\"\tcopy: \"%s\"\n", i, input_args[i], copy);
-    printf("input_args[%d+1]: %s\n", i, input_args[i+1]);
+    printf("input_args[%d+1]:\"%s\"\n", i, input_args[i+1]);
     //strcat(copy, " ");
     //printf("should be single_spacing:%s\n", copy);
     single_space(copy);
