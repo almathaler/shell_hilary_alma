@@ -8,6 +8,32 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
+int execute_type(char *input){
+  int type = type_arg(input);
+  printf("got type of \"%s\": %d\n", input, type);
+  switch(type) {
+    case 0:
+      single_space(input);
+      break;
+    case 1:
+      colon_(input);
+      break;
+    case 2:
+      greater_than(input);
+      break;
+    case 3:
+      //less_than();
+      break;
+    case 4:
+      //pipe();
+      break;
+    default:
+      printf("Command format cannot be executed. Quitting...\n");
+      exit(1);
+  }
+  return 0;
+}
+
 char ** parse_input(char *input, char *delimiter){
   int size = 10;
   char **to_return = malloc(10 * sizeof(char *));
@@ -34,27 +60,7 @@ int execute(){
     printf("error in execute's fgets!\n");
   }
   //doing what input says based on switch
-  int type = type_arg(input);
-  switch(type) {
-    case 0:
-      single_space(input);
-      break;
-    case 1:
-      colon_(input);
-      break;
-    case 2:
-      greater_than(input);
-      break;
-    case 3:
-      //less_than();
-      break;
-    case 4:
-      //pipe();
-      break;
-    default:
-      printf("Command format cannot be executed. Quitting...\n");
-      exit(1);
-  }
+  execute_type(input);
   return 0;
 }
 
@@ -134,7 +140,7 @@ int colon_(char *input){
     }
     strcat(copy, " ");
     //printf("should be single_spacing:%s\n", copy);
-    single_space(copy);
+    execute_type(copy);
     i++;
   }
   return 0;

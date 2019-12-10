@@ -63,8 +63,11 @@ int pipe_(char *input);
 /*
 */
 static void sighandler(int signo);
-
 /*
+*/
+int execute_type(char *input);
+/*
+
 
 int change_directory(char *input);
 int exit_this(char *input);
