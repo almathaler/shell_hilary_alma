@@ -160,6 +160,7 @@ int colon_(char *input){
     //printf("should be single_spacing:%s\n", copy);
     single_space(copy);
     printf("succesfully single_spaced input_args[%d]\n", i);
+    printf("input_args[%d+1]: %s\n", i, input_args[i+1]);
     i++;
   }
   return 0;
