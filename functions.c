@@ -90,8 +90,13 @@ int single_space(char * input){
   //check based on what's present
   //if no whitespace, don't parse, means just one command like "ls" from colon or >
   //if whitespace, then parse
+  char **input_args;
   if (strchr(input, ' ') != NULL || strchr(input, '\t') != NULL || strchr(input, '\n') != NULL){
-    char **input_args = parse_input(input, " \t\n");
+    input_args = parse_input(input, " \t\n");
+  }else{
+    *input_args[0] = input;
+    *input_args[1] = NULL;
+    //parse urself basically (last entry must be null) 
   }
   //else don't parse
 
