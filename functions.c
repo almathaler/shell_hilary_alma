@@ -139,6 +139,12 @@ int colon_(char *input){
   char **input_args = parse_input(input, ";\n"); //this might give problems for "ls ; cd", bc if first char is delimiter, strsep makes it null
 
   int i = 0;
+  //more testing
+  while(input_args[i] != NULL){
+    printf("input_args[%d]: \"%s\"\n", i, input_args[i]);
+    i++;
+  }
+  i = 0;
   while(input_args[i] != NULL){
     char copy[256];
     strcpy(copy, input_args[i]);
