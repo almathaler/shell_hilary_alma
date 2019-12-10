@@ -94,9 +94,9 @@ int single_space(char * input){
   if (strchr(input, ' ') != NULL || strchr(input, '\t') != NULL || strchr(input, '\n') != NULL){
     input_args = parse_input(input, " \t\n");
   }else{
-    *input_args[0] = input;
-    *input_args[1] = NULL;
-    //parse urself basically (last entry must be null) 
+    input_args[0] = input;
+    input_args[1] = NULL;
+    //parse urself basically (last entry must be null)
   }
   //else don't parse
 
