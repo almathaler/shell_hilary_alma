@@ -145,18 +145,19 @@ int greater_than(char *input) {
   char **input_args = parse_input(input, ">\n");
   printf("parsed\n");
   int i = 0;
+  //to check that there are no extra spaces in between
   while(input_args[i] != NULL){
     char copy[256];
     strcpy(copy, input_args[i]);
     if (strchr(copy, ' ') != strrchr(copy, ' ')){
-      printf("please format your coloned input as \"cmd1>cmd2\"\n");
+      printf("please format your redirected input as \"cmd1>cmd2\"\n");
       return 0;
     }
     printf("input_args[%d]:\"%s\"\n", i, input_args[i]);
     i++;
   }
   //Open file
-  int check = open(input_args[1], O_CREAT | O_WRONLY, 0644);
+  int check = open(input_args[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
   printf("check: %d\n", check);
   if (check == -1) {
     printf("opening your file failed, strerror: %s\n", strerror(errno));
@@ -164,10 +165,10 @@ int greater_than(char *input) {
 
   int backup = dup(1); //Duplicates stdout
   dup2(check, 1); //Turns stdout into this current process
-  char process[256];
-  strcpy(process, input_args[0]);
-  strcat(process, " ");
-  single_space(process);
+  char file_name[256];
+  strcpy(file_name, input_args[0]);
+  strcat(file_name, " ");
+  single_space(file_name);
   dup2(backup, 1);
   return 0;
 }
