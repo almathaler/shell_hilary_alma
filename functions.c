@@ -165,6 +165,7 @@ int greater_than(char *input) {
   int backup = dup(1); //Duplicates stdout
   dup2(check, 1); //Turns stdout into this current process
   char process[256];
+  strcpy(process, input_args[0]);
   strcat(process, " ");
   single_space(process);
   dup2(backup, 1);
