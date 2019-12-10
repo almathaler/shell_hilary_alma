@@ -87,7 +87,13 @@ int type_arg(char * input){
 int single_space(char * input){
   //printf("(SS)input:\"%s\"\n", input);
 
-  char **input_args = parse_input(input, " \t\n");
+  //check based on what's present
+  //if no whitespace, don't parse, means just one command like "ls" from colon or >
+  //if whitespace, then parse
+  if (strchr(input, ' ') != NULL || strchr(input, '\t') != NULL || strchr(input, '\n') != NULL){
+    char **input_args = parse_input(input, " \t\n");
+  }
+  //else don't parse
 
   if (strcmp("exit", input_args[0]) == 0){
     exit(0); // exit the program
@@ -130,7 +136,7 @@ int colon_(char *input){
       printf("please format your coloned input as \"cmd1;cmd2\"\n");
       return 0;
     }
-    strcat(copy, " ");
+    //strcat(copy, " ");
     //printf("should be single_spacing:%s\n", copy);
     single_space(copy);
     i++;
