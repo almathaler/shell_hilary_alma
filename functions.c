@@ -88,7 +88,8 @@ int single_space(char * input){
   //printf("(SS)input:\"%s\"\n", input);
 
   char **input_args = parse_input(input, " \t\n");
-  printf("Now in single space");
+  printf("Now in single space\n");
+  printf("input_args[0]: \'%s\'\n", input_args[0]);
 
   if (strcmp("exit", input_args[0]) == 0){
     exit(0); // exit the program
@@ -110,7 +111,6 @@ int single_space(char * input){
         printf("exited normally (0 means no)? %d\treturn val: %d\n", exited, return_val_child);
       }
     }else{
-      printf("input_args[0]: \'%s\'", input_args[0]);
       if (execvp(input_args[0], input_args) == -1){
         printf("Something wrong with execvp! errno:%d\tstrerror:%s\n", errno, strerror(errno));
       }
