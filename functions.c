@@ -95,7 +95,7 @@ int single_space(char * input){
   strcpy(copy, input);
   printf("made copy to protect input's relations:\tcopy:\"%s\"\n", copy);
   char **input_args;
-  if (strchr(copy, ' ') != NULL || strchr(copy, '\t') != NULL || strchr(copy, '\n') != NULL){
+  if (strchr(input, ' ') != NULL || strchr(input, '\t') != NULL || strchr(input, '\n') != NULL){
     input_args = parse_input(copy, " \t\n");
   }else{
     input_args[0] = copy;
