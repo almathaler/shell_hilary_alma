@@ -35,12 +35,14 @@ int execute_type(char *input){
 }
 
 char ** parse_input(char *input, char *delimiter){
+  printf("in parse_input, input: \"%s\"\n", input);
   int size = 10;
   char **to_return = malloc(10 * sizeof(char *));
   char *checker = input;
   int i = 0;
-  while(*checker != '\0'){
+  while(checker != NULL && *checker != '\0'){
     to_return[i] = strsep(&checker, delimiter);
+    printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
     i++;
     if (i >= 2){
       size = size * 2;
@@ -48,6 +50,7 @@ char ** parse_input(char *input, char *delimiter){
     }
   }
   to_return[i] = NULL;
+  printf("at end of parse_input\n");
   return to_return;
 }
 
@@ -138,7 +141,9 @@ int colon_(char *input){
       printf("please format your coloned input as \"cmd1;cmd2\"\n");
       return 0;
     }
-    strcat(copy, " ");
+
+    //strcat(copy, " ");
+
     //printf("should be single_spacing:%s\n", copy);
     execute_type(copy);
     i++;
@@ -173,7 +178,9 @@ int greater_than(char *input) {
   dup2(check, 1); //Turns stdout into this current process
   char file_name[256];
   strcpy(file_name, input_args[0]);
-  strcat(file_name, " ");
+
+  //strcat(file_name, " ");
+
   single_space(file_name);
   dup2(backup, 1);
   return 0;
