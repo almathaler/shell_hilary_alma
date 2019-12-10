@@ -97,11 +97,13 @@ int single_space(char * input){
   char **input_args;
   if (strchr(input, ' ') != NULL || strchr(input, '\t') != NULL || strchr(input, '\n') != NULL){
     input_args = parse_input(copy, " \t\n");
+    printf("is seg fault after input_args=parse_input?\n");
   }else{
     input_args[0] = copy;
     //this is causing a problem, copy input
     input_args[1] = NULL;
     //parse urself basically (last entry must be null)
+    printf("is seg fault after else statement?\n");
   }
 
   int i = 0;
