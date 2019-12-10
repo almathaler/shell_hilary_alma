@@ -90,6 +90,8 @@ int single_space(char * input){
   //check based on what's present
   //if no whitespace, don't parse, means just one command like "ls" from colon or >
   //if whitespace, then parse
+  printf("SS input: \"%s\"\n", input);
+
   char **input_args;
   if (strchr(input, ' ') != NULL || strchr(input, '\t') != NULL || strchr(input, '\n') != NULL){
     input_args = parse_input(input, " \t\n");
@@ -98,7 +100,12 @@ int single_space(char * input){
     input_args[1] = NULL;
     //parse urself basically (last entry must be null)
   }
-  //else don't parse
+
+  int i = 0;
+  while(input_args[i] != NULL){
+    printf("input_args[%d]: \"%s\"\n", i, input_args[i]);
+    i++;
+  }
 
   if (strcmp("exit", input_args[0]) == 0){
     exit(0); // exit the program
@@ -141,6 +148,7 @@ int colon_(char *input){
       printf("please format your coloned input as \"cmd1;cmd2\"\n");
       return 0;
     }
+    printf("input_args[%d]: \"%s\"\tcopy: \"%s\"\n", i, input_args[i], copy);
     //strcat(copy, " ");
     //printf("should be single_spacing:%s\n", copy);
     single_space(copy);
