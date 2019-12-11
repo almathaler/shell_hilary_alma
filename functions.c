@@ -35,14 +35,58 @@ int execute_type(char *input){
 }
 
 char ** parse_input(char *input, char *delimiter){
-  printf("in parse_input, input: \"%s\"\n", input);
   int size = 10;
   char **to_return = malloc(10 * sizeof(char *));
-  char *checker = input;
+  char checker[256];
+  strcpy(checker, input);
+  char *copy_input = input;
   int i = 0;
   while(checker != NULL && *checker != '\0'){
-    to_return[i] = strsep(&checker, delimiter);
-    printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
+    //check for leading whitespace
+    int index_checker = 0;
+    while(checker[index_checker] != '\0' &&
+         (checker[index_checker] == '\n' || checker[index_checker] == '\t' || checker[index_checker] == ' ')){
+      index_checker++;
+    }
+    int not_null = 0;
+    while(checker[not_null + index_checker]!='\0'){
+      checker[not_null] = checker[index_checker + not_null];
+      not_null++;
+    }
+    checker[not_null] = '\0';
+    //trailing whitespace
+    index_checker = 0;
+    int other_index = -1;
+    while(checker[index_checker] != '\0'){
+       if(checker[index_checker] != ' ' && checker[index_checker] != '\t' && checker[index_checker] != '\n'){
+           other_index = index_checker;
+       }
+       index_checker++;
+    }
+    checker[other_index + 1] = '\0';
+    //another buffer so checker isn't bothered (u can't modify checker if to_return points to something in it)
+    char checker_buffer[256];
+    index_checker = 0;
+    while(checker[index_checker] != '\0'){
+      checker_buffer[index_checker] = checker[index_checker];
+      index_checker++;
+    }
+    checker_buffer[index_checker] = '\0';
+    copy_input = checker_buffer;
+    to_return[i] = strsep(&copy_input, delimiter);
+    char buffer[256] = "\0";
+    if (copy_input!= NULL && *copy_input != '\0'){
+      strcpy(buffer, copy_input);
+    }
+    int k = 0;
+    while(buffer[k]!='\0'){
+      checker[k] = buffer[k];
+      k++;
+    }
+    checker[k] = '\0';
+    //
+    //printf("checker: \"%s\", %p\tinput: \"%s\", %p\n", checker, &checker, input, &input);
+    //printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
     i++;
     if (i >= 2){
       size = size * 2;
@@ -50,6 +94,11 @@ char ** parse_input(char *input, char *delimiter){
     }
   }
   to_return[i] = NULL;
+  int goingthrureturn = 0;
+  while (to_return[goingthrureturn] != NULL){
+    printf("to_return[%d]: \"%s\"\n", goingthrureturn, to_return[goingthrureturn]);
+    goingthrureturn++;
+  }
   printf("at end of parse_input\n");
   return to_return;
 }
