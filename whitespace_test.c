@@ -64,11 +64,11 @@ char ** parse_input(char *input, char *delimiter){
     checker[index_checker] = '\0';
     printf("(after trailing) checker now: \"%s\"\n", checker);
     //
-    strcpy(strsep_checker, checker); //bc strsep needs a string literal
+    //strcpy(strsep_checker, checker); //bc strsep needs a string literal
     printf("seg fault after strcpy?\n");
-    to_return[i] = strsep(&strsep_checker, delimiter);
+    to_return[i] = strsep(&checker, delimiter);
     printf("seg fault after strsep?\n");
-    strcpy(checker, strsep_checker); //so checker gets the changes
+    //strcpy(checker, strsep_checker); //so checker gets the changes
     printf("seg fault after 2nd strcpy?\n");
     printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
     i++;
