@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include <ctype.h>
 #include <fcntl.h>
 
 int execute_type(char *input){
@@ -34,6 +35,23 @@ int execute_type(char *input){
   return 0;
 }
 
+int strip_whitespace(char *input, char *output){
+  char buffer[256];
+  int i = 0;
+  int k = 0;
+  while(input[k]!='\0'){
+    if (!isspace(input[k])){//if it's not a space
+      buffer[i] = input[k];
+      i++;
+    }
+    k++;
+  }
+  buffer[i] = '\0';
+  output = buffer;
+  printf("input: \"%s\"\toutput: \"%s\"\n", input, output);
+  return 0;
+}
+
 char ** parse_input(char *input, char *delimiter){
   printf("in parse_input, input: \"%s\"\n", input);
   int size = 10;
@@ -42,6 +60,7 @@ char ** parse_input(char *input, char *delimiter){
   int i = 0;
   while(checker != NULL && *checker != '\0'){
     to_return[i] = strsep(&checker, delimiter);
+    //strip_whitespace(to_return[i], to_return[i]) -- do this to file name instead in > and <
     printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
     if (strcmp(to_return[i], "")){
       i++;
@@ -162,6 +181,9 @@ int greater_than(char *input) {
     i++;
   }
   //Open file
+  if (strip_whitespace(input_args[1], input_args[1])){
+    printf("in greater than, issue with strip whitespace\n");
+  }
   int check = open(input_args[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
   printf("check: %d\n", check);
   if (check == -1) {
