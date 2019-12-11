@@ -180,6 +180,8 @@ int less_than(char *input) {
   while(input_args[i] != NULL){
     char copy[256];
     strcpy(copy, input_args[i]);
+    printf("%s\n", strchr(copy, ' '));
+    printf("%s\n", strrchr(copy, ' '));
     if (strchr(copy, ' ') != strrchr(copy, ' ')){
       printf("please format your redirected input as \"cmd1<cmd2\"\n");
       return 0;
