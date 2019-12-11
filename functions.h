@@ -3,6 +3,8 @@
 
 //hopefully will help with colon
 char ** parse_input(char *input, char *delimiter); //for parsing
+
+//the output should be a string large enough to hold input and its terminating null, and not the same
 int strip_whitespace(char *input, char *output);
 //REMEMBER 0 IS FALSE AND 1 IS TRUE
 /*

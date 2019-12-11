@@ -10,8 +10,9 @@
 #include <fcntl.h>
 
 int execute_type(char *input){
+  //here choose which function to run based on input
   int type = type_arg(input);
-  printf("got type of \"%s\": %d\n", input, type);
+  //printf("got type of \"%s\": %d\n", input, type);
   switch(type) {
     case 0:
       single_space(input);
@@ -36,32 +37,35 @@ int execute_type(char *input){
 }
 
 int strip_whitespace(char *input, char *output){
-  char buffer[256];
-  int i = 0;
-  int k = 0;
-  while(input[k]!='\0'){
-    if (!isspace(input[k])){//if it's not a space
-      buffer[i] = input[k];
-      i++;
-    }
-    k++;
+  //here remove the whitespace. ideal for < and > which deal with files
+  if (input == NULL){
+    return 0; //don't touch it
   }
-  buffer[i] = '\0';
-  output = buffer;
-  printf("input: \"%s\"\toutput: \"%s\"\n", input, output);
+  char *out = output, *in = input;
+  while(*in != '\0'){
+    if (!isspace(*in)){
+      *out = *in;
+      out++;
+    }
+    in++;
+  }
+  *out = '\0';
+  //printf("input: \"%s\"\toutput: \"%s\"\n", input, output);
   return 0;
 }
 
 char ** parse_input(char *input, char *delimiter){
-  printf("in parse_input, input: \"%s\"\n", input);
+  //parses input based on delimiter, and if you have 2 delimiters in a row ("  "), remove the subsequentn addition of "" to
+  //input_args
+
+  //printf("in parse_input, input: \"%s\"\n", input);
   int size = 10;
   char **to_return = malloc(10 * sizeof(char *));
   char *checker = input;
   int i = 0;
   while(checker != NULL && *checker != '\0'){
     to_return[i] = strsep(&checker, delimiter);
-    //strip_whitespace(to_return[i], to_return[i]) -- do this to file name instead in > and <
-    printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
+    //printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
     if (strcmp(to_return[i], "")){
       i++;
     }
@@ -71,11 +75,12 @@ char ** parse_input(char *input, char *delimiter){
     }
   }
   to_return[i] = NULL;
-  printf("at end of parse_input\n");
+  //printf("at end of parse_input\n");
   return to_return;
 }
 
 int execute(){
+  //fgets then execute_type
   //getting input
   print_prompt();
   char input[256];
@@ -98,8 +103,7 @@ void print_prompt(){
 }
 
 int type_arg(char * input){
-  //The functions strchr() and strrchr() return a pointer to the located character,
-  //   or NULL if the character does not appear in the string.
+  //based on these numbers, 'execute_type' takes to a different funciton
   if(!(strchr(input, ';') == NULL)){
     return 1; //return this first so that if there's like ls|wc ; cd, won't accidentally go into | pile
   }else if(!(strchr(input, '>') == NULL)){
@@ -115,12 +119,8 @@ int type_arg(char * input){
 }
 
 int single_space(char * input){
-  //printf("(SS)input:\"%s\"\n", input);
-
   char **input_args = parse_input(input, " \t\n");
-  printf("Now in single space\n");
-  printf("input_args[0]: \'%s\'\n", input_args[0]);
-
+  //first see if we are exiting or cding
   if (strcmp("exit", input_args[0]) == 0){
     exit(0); // exit the program
   }
@@ -150,6 +150,7 @@ int single_space(char * input){
 }
 
 int colon_(char *input){
+  //just call single_space over and over
   char **input_args = parse_input(input, ";\n"); //this might give problems for "ls ; cd", bc if first char is delimiter, strsep makes it null
 
   int i = 0;
@@ -163,41 +164,27 @@ int colon_(char *input){
 }
 
 int greater_than(char *input) {
-  printf("in greater than\n");
   char **input_args = parse_input(input, ">\n");
-  printf("parsed\n");
-  int i = 0;
-  //to check that there are no extra spaces in between
-  while(input_args[i] != NULL){
-    char copy[256];
-    strcpy(copy, input_args[i]);
-    /*
-    if (strchr(copy, ' ') != strrchr(copy, ' ')){
-      printf("please format your redirected input as \"cmd1>cmd2\"\n");
-      return 0;
-    }
-    */
-    printf("input_args[%d]:\"%s\"\n", i, input_args[i]);
-    i++;
+  //should have 2 input_args, one that is command to be carried out and the other is file that output is written into
+  //create filename char to hold filename after it's modified
+  char *filename = malloc(strlen(input_args[1]) + 1);
+  //do whitespace w input_args[1] and filename (must have given filename memory before hand)
+  if(strip_whitespace(input_args[1], filename)){
+    printf("uh oh, strip_whitespace failed...\n");
   }
-  //Open file
-  if (strip_whitespace(input_args[1], input_args[1])){
-    printf("in greater than, issue with strip whitespace\n");
-  }
-  int check = open(input_args[1], O_WRONLY | O_CREAT | O_TRUNC, 0644);
-  printf("check: %d\n", check);
+  //open filename
+  int check = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
   if (check == -1) {
     printf("opening your file failed, strerror: %s\n", strerror(errno));
   }
-
+  //now make stdout's fd point to our specified file
   int backup = dup(1); //Duplicates stdout
   dup2(check, 1); //Turns stdout into this current process
   char command[256];
   strcpy(command, input_args[0]);
-
-  //strcat(file_name, " ");
-
+  //i don't remember why we made a char buffer, but yea carry out that command (stuff will be written into filename)
   single_space(command);
+  //don't forget to switch back to normal!
   dup2(backup, 1);
   return 0;
 }
