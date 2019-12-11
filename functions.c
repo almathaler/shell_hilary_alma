@@ -135,16 +135,6 @@ int colon_(char *input){
   while(input_args[i] != NULL){
     char copy[256];
     strcpy(copy, input_args[i]);
-    //this is why single_space was giving seg faults, in "ls;echo alma" there are no " \t\n" at all. NExt will solve for when space at front by
-    //if white space at start, what to do? i guess should make all strings into char arrays
-    if (strchr(copy, ' ') != strrchr(copy, ' ')){
-      printf("please format your coloned input as \"cmd1;cmd2\"\n");
-      return 0;
-    }
-
-    //strcat(copy, " ");
-
-    //printf("should be single_spacing:%s\n", copy);
     execute_type(copy);
     i++;
   }
