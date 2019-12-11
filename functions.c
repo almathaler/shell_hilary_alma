@@ -152,10 +152,12 @@ int greater_than(char *input) {
   while(input_args[i] != NULL){
     char copy[256];
     strcpy(copy, input_args[i]);
+    /*
     if (strchr(copy, ' ') != strrchr(copy, ' ')){
       printf("please format your redirected input as \"cmd1>cmd2\"\n");
       return 0;
     }
+    */
     printf("input_args[%d]:\"%s\"\n", i, input_args[i]);
     i++;
   }
@@ -168,12 +170,12 @@ int greater_than(char *input) {
 
   int backup = dup(1); //Duplicates stdout
   dup2(check, 1); //Turns stdout into this current process
-  char file_name[256];
-  strcpy(file_name, input_args[0]);
+  char command[256];
+  strcpy(command, input_args[0]);
 
   //strcat(file_name, " ");
 
-  single_space(file_name);
+  single_space(command);
   dup2(backup, 1);
   return 0;
 }
