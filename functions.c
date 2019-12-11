@@ -171,3 +171,20 @@ int greater_than(char *input) {
   dup2(backup, 1);
   return 0;
 }
+
+int less_than(char *input) {
+  printf("in less than\n");
+  char **input_args = parse_input(input, "<\n");
+  printf("parsed\n");
+  int i = 0;
+  while(input_args[i] != NULL){
+    char copy[256];
+    strcpy(copy, input_args[i]);
+    if (strchr(copy, ' ') != strrchr(copy, ' ')){
+      printf("please format your redirected input as \"cmd1<cmd2\"\n");
+      return 0;
+    }
+    printf("input_args[%d]:\"%s\"\n", i, input_args[i]);
+    i++;
+  }
+}
