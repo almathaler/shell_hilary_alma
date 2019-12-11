@@ -52,7 +52,7 @@ char ** parse_input(char *input, char *delimiter){
     }
     printf("not_null: %d\n", not_null);
     checker[index_checker + not_null] = '\0';
-    printf("checker now: %s\n", checker);
+    printf("(after leading) checker now: %s\n", checker);
     //check for trailing whitespace
     index_checker = strlen(checker); //at end, "abc\0" will be null
     while(checker[index_checker] > 0 &&  //while you're not going past the string and also going only thru whitespace
@@ -62,11 +62,14 @@ char ** parse_input(char *input, char *delimiter){
           index_checker--;
         }
     checker[index_checker] = '\0';
-    printf("checker now: \"%s\"\n", checker);
+    printf("(after trailing) checker now: \"%s\"\n", checker);
     //
     strcpy(strsep_checker, checker); //bc strsep needs a string literal
+    printf("seg fault after strcpy?\n");
     to_return[i] = strsep(&strsep_checker, delimiter);
+    printf("seg fault after strsep?\n");
     strcpy(checker, strsep_checker); //so checker gets the changes
+    printf("seg fault after 2nd strcpy?\n");
     printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
     i++;
     if (i >= 2){
