@@ -70,7 +70,7 @@ char ** parse_input(char *input, char *delimiter){
     printf("seg fault after strsep?\n");
     //strcpy(checker, strsep_checker); //so checker gets the changes
     //printf("seg fault after 2nd strcpy?\n");
-    printf("checker: \"%s\"\tinput: \"%s\"\n", checker, input);
+    printf("checker: \"%s\", %hhx\tinput: \"%s\", %hhx\n", checker, &checker, input, &input);
     printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
     i++;
     if (i >= 2){
