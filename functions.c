@@ -145,7 +145,6 @@ int greater_than(char *input) {
   char **input_args = parse_input(input, ">\n");
   printf("parsed\n");
   int i = 0;
-  //to check that there are no extra spaces in between
   while(input_args[i] != NULL){
     char copy[256];
     strcpy(copy, input_args[i]);
