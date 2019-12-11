@@ -46,7 +46,7 @@ int execute(){
       greater_than(input);
       break;
     case 3:
-      //less_than();
+      less_than(input);
       break;
     case 4:
       //pipe();
