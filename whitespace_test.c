@@ -31,7 +31,6 @@ char ** parse_input(char *input, char *delimiter){
   char **to_return = malloc(10 * sizeof(char *));
   char checker[256];
   strcpy(checker, input);
-  char *strsep_checker = "";
   printf("checker[0]:%c\tchecker[1]:%c\tchecker[2]:%c\n", checker[0], checker[1], checker[2]);
   //char delims[256] = *delimiter;
   //printf("delims[0]:%c\tdelims[1]:%c\tdelims[2]:%c\n", delims[0], delims[1], delims[2]);
@@ -65,13 +64,13 @@ char ** parse_input(char *input, char *delimiter){
     printf("(after trailing) checker now: \"%s\"\n", checker);
     //
     //strcpy(strsep_checker, checker); //bc strsep needs a string literal
-    strsep_checker = checker;
+    input = checker;
     printf("seg fault after strcpy?\n");
-    to_return[i] = strsep(&strsep_checker, delimiter);
+    to_return[i] = strsep(&input, delimiter);
     printf("seg fault after strsep?\n");
-    strcpy(checker, strsep_checker); //so checker gets the changes
-    printf("seg fault after 2nd strcpy?\n");
-    printf("checker: \"%s\"\tstrsep_checker: \"%s\"\n", checker, strsep_checker);
+    //strcpy(checker, strsep_checker); //so checker gets the changes
+    //printf("seg fault after 2nd strcpy?\n");
+    printf("checker: \"%s\"\tinput: \"%s\"\n", checker, input);
     printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
     i++;
     if (i >= 2){
