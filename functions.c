@@ -187,4 +187,20 @@ int less_than(char *input) {
     printf("input_args[%d]:\"%s\"\n", i, input_args[i]);
     i++;
   }
+
+  //Open file
+  int check = open(input_args[1], O_RDONLY, 0644);
+  printf("check: %d\n", check);
+  if (check == -1) {
+    printf("opening your file failed, strerror: %s\n", strerror(errno));
+  }
+
+  int backup = dup(0); //Duplicates stdin
+  dup2(check, 0); //Turns stdout into this current process
+  char file_name[256];
+  strcpy(file_name, input_args[0]);
+  strcat(file_name, " ");
+  single_space(file_name);
+  dup2(backup, 0);
+  return 0;
 }
