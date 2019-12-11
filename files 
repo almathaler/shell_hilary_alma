@@ -1,7 +1,0 @@
-in parse_input, input: "echo hello"
-to_return[0]: "echo"	checker: "hello"
-to_return[1]: "hello"	checker: "(null)"
-at end of parse_input
-Now in single space
-input_args[0]: 'echo'
-hello
