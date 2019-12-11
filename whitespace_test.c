@@ -44,6 +44,7 @@ char ** parse_input(char *input, char *delimiter){
       not_null++;
     }
     checker[not_null] = '\0';
+    //trailing
     index_checker = 0;
     int other_index = -1;
     while(checker[index_checker] != '\0'){
@@ -53,6 +54,7 @@ char ** parse_input(char *input, char *delimiter){
        index_checker++;
     }
     checker[other_index + 1] = '\0';
+    //
     char checker_buffer[256];
     index_checker = 0;
     while(checker[index_checker] != '\0'){
