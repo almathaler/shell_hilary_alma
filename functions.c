@@ -38,9 +38,35 @@ char ** parse_input(char *input, char *delimiter){
   printf("in parse_input, input: \"%s\"\n", input);
   int size = 10;
   char **to_return = malloc(10 * sizeof(char *));
-  char *checker = input;
+  char checker[256] = *input;
+  printf("checker[0]:%c\tchecker[1]:%c\tchecker[3]:%c\n", checker[0], checker[1], checker[3]);
+  //char delims[256] = *delimiter;
+  printf("delims[0]:%c\tdelims[1]:%c\tdelims[2]:%c\n", delims[0], delims[1], delims[2]);
   int i = 0;
   while(checker != NULL && *checker != '\0'){
+    //check for leading whitespace
+    int index_checker = 0;
+    while(checker[index_checker] == '\n' || checker[index_checker] == '\t' || checker[index_checker] == ' '){
+      index_checker++;
+    }
+    //so now gonna rewrite string, from 0 tho will equal string[i+index_checker];
+    int not_null = 0;
+    while(checker[not_null]!='\0'){
+      checker[not_null] = checker[index_checker + not_null];
+      not_null++;
+    }
+    checker[index_checker + not_null] = '\0';
+    //check for trailing whitespace
+    index_checker = strlen(checker); //at end, "abc\0" will be null
+    while(checker[index_checker] > 0 &&  //while you're not going past the string and also going only thru whitespace
+        (checker[index_checker] == '\n' ||
+        checker[index_checker] == '\t' ||
+        checker[index_checker] == ' ')){
+          index_checker--;
+        }
+    checker[index_checker] = '\0';
+
+    //
     to_return[i] = strsep(&checker, delimiter);
     printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
     i++;
