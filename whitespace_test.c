@@ -69,8 +69,9 @@ char ** parse_input(char *input, char *delimiter){
     printf("seg fault after strcpy?\n");
     to_return[i] = strsep(&strsep_checker, delimiter);
     printf("seg fault after strsep?\n");
-    strcpy(checker, strsep_checker); //so checker gets the changes
+    checker = strsep_checker; //so checker gets the changes
     printf("seg fault after 2nd strcpy?\n");
+    printf("checker: \"%s\"\tstrsep_checker: \"%s\"\n", checker, strsep_checker);
     printf("to_return[%d]: \"%s\"\tchecker: \"%s\"\n", i, to_return[i], checker);
     i++;
     if (i >= 2){
