@@ -64,8 +64,8 @@ char ** parse_input(char *input, char *delimiter){
     checker[index_checker] = '\0';
     printf("(after trailing) checker now: \"%s\"\n", checker);
     //
-    //strcpy(strsep_checker, checker); //bc strsep needs a string literal
-    strsep_checker = checker;
+    strcpy(checker, strsep_checker); //bc strsep needs a string literal
+    //strsep_checker = checker;
     printf("seg fault after strcpy?\n");
     to_return[i] = strsep(&strsep_checker, delimiter);
     printf("seg fault after strsep?\n");
