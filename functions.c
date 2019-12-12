@@ -270,11 +270,21 @@ int pipe_(char *input) {
   }
   printf("command2: \'%s\'\n", command2);
 
+  //Opening pipe
   FILE *p;
   p = popen(command1, "r");
   if (p == NULL) {
     printf("Failed to open pipe");
+  } else {
+    printf("Opened pipe");
   }
+
+  //Reading from pipe
+  char output[1000];
+  char *out = fgets(output, 1000, p);
+  printf("Output from pipe: %s", out);
+
+  //Closing pipe
   int check = pclose(p);
   if (check == -1) {
     printf("Failed to close pipe");
