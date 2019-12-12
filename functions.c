@@ -256,3 +256,11 @@ int less_than(char *input) {
   dup2(backup, 0);
   return 0;
 }
+
+int pipe_(char *input) {
+  char **input_args = parse_input(input, "|\n");
+  printf("command1: \'%s\'\n", input_args[0]);
+  printf("command2: \'%s\'\n", input_args[1]);
+
+  return 0;
+}
