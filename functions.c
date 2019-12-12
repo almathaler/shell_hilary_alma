@@ -259,8 +259,10 @@ int less_than(char *input) {
 
 int pipe_(char *input) {
   char **input_args = parse_input(input, "|\n");
-  char command1[256];
-  strcpy(command1, input_args[0]);
+  char *command1 = malloc(strlen(input_args[1]) + 1);
+  if(strip_whitespace(input_args[1], filename)){
+    printf("uh oh, strip_whitespace failed...\n");
+  }
   printf("command1: \'%s\'\n", command1);
   char command2[256];
   strcpy(command2, input_args[1]);
@@ -268,6 +270,13 @@ int pipe_(char *input) {
 
   FILE *p;
   p = popen(command1, "r");
+  if (p == NULL) {
+    printf("Failed to open pipe");
+  }
+  int check = pclose(p);
+  if (check == -1) {
+    printf("Failed to close pipe");
+  }
 
   return 0;
 }
