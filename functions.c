@@ -260,7 +260,7 @@ int less_than(char *input) {
 int pipe_(char *input) {
   char **input_args = parse_input(input, "|\n");
   char *command1 = malloc(strlen(input_args[1]) + 1);
-  if(strip_whitespace(input_args[1], filename)){
+  if(strip_whitespace(input_args[1], command1)){
     printf("uh oh, strip_whitespace failed...\n");
   }
   printf("command1: \'%s\'\n", command1);
