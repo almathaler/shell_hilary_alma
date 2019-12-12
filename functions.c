@@ -231,7 +231,6 @@ int double_greater_than(char *input){
 }
 
 int less_than(char *input) {
-  //as of now, if '>>' then will just treat as '>'
   char **input_args = parse_input(input, "<\n");
   //should have 2 input_args, one that is command to be carried out and the other is file that output is written into
   //create filename char to hold filename after it's modified
@@ -241,15 +240,17 @@ int less_than(char *input) {
     printf("uh oh, strip_whitespace failed...\n");
   }
   //open filename
+  printf("filename: \'%s\'", filename);
   int check = open(filename, O_RDONLY, 0644);
   if (check == -1) {
     printf("opening your file failed, strerror: %s\n", strerror(errno));
   }
   //now make stdin's fd point to our specified file
-  int backup = dup(0); //Duplicates stdout
-  dup2(check, 0); //Turns stdout into this current process
+  int backup = dup(0); //Duplicates stdin
+  dup2(check, 0); //Turns stdin into this current process
   char command[256];
   strcpy(command, input_args[0]);
+  printf("command: \'%s\'", command);
   single_space(command);
   //don't forget to switch back to normal!
   dup2(backup, 0);
