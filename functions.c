@@ -259,8 +259,12 @@ int less_than(char *input) {
 
 int pipe_(char *input) {
   char **input_args = parse_input(input, "|\n");
-  printf("command1: \'%s\'\n", input_args[0]);
-  printf("command2: \'%s\'\n", input_args[1]);
+  char command1[256];
+  strcpy(command1, input_args[0]);
+  printf("command1: \'%s\'\n", command1);
+  char command2[256];
+  strcpy(command2, input_args[1]);
+  printf("command2: \'%s\'\n", command2);
 
   return 0;
 }
