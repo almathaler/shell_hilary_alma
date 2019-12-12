@@ -109,14 +109,26 @@ int type_arg(char * input){
   //based on these numbers, 'execute_type' takes to a different funciton
   if(!(strchr(input, ';') == NULL)){
     return 1; //return this first so that if there's like ls|wc ; cd, won't accidentally go into | pile
-  }else if(!(strchr(input, '>') == NULL)){ //return 2 or 5, yes not intuitive but added >> at end
-    if (strchr(input, '>') == strrchr(input, '>')){
-      return 2;
+  }else if(!(strchr(input, '>') == NULL) || !(strchr(input, '<') == NULL)){ //could be < or >
+    if (strchr(input, '>') != NULL && strchr(input, '<') == NULL){ //so there's just >
+      if (strchr(input, '>') == strrchr(input, '>')){
+        return 2; //so it's just >
+      }else{
+        return 5; //it's >>
+      }
+    }else if (strchr(input, '<') != NULL && strchr(input, '>') == NULL){ //
+      return 3;
     }else{
-      return 5; //this means there is >>, also can't do multiple redirects like a > b > c
+      if (strchr(input, '<') > strchr(input, '>')){ //return whichever one isi farthest right
+        return 3;
+      }else{
+        if (strchr(input, '>') == strrchr(input, '>')){
+          return 2; //so it's just >
+        }else{
+          return 5; //it's >>
+        }
+      }
     }
-  }else if(!(strchr(input, '<') == NULL)){
-    return 3;
   }else if(!(strchr(input, '|') == NULL)){
     return 4;
   }else{ //have single_space deal w/ exit and cd
@@ -191,7 +203,7 @@ int greater_than(char *input) {
   char command[256];
   strcpy(command, input_args[0]);
   //i don't remember why we made a char buffer, but yea carry out that command (stuff will be written into filename)
-  single_space(command);
+  execute_type(command); //so if it's double
   //don't forget to switch back to normal!
   dup2(backup, 1);
   return 0;
@@ -224,7 +236,7 @@ int double_greater_than(char *input){
   char command[256];
   strcpy(command, input_args[0]);
   //i don't remember why we made a char buffer, but yea carry out that command (stuff will be written into filename)
-  single_space(command);
+  execute_type(command); //so if it's a a < b > c
   //don't forget to switch back to normal!
   dup2(backup, 1);
   return 0;
@@ -251,7 +263,7 @@ int less_than(char *input) {
   char command[256];
   strcpy(command, input_args[0]);
   printf("command: \'%s\'\n", command);
-  single_space(command);
+  execute_type(command);
   //don't forget to switch back to normal!
   dup2(backup, 0);
   return 0;
