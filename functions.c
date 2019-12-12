@@ -240,7 +240,7 @@ int less_than(char *input) {
     printf("uh oh, strip_whitespace failed...\n");
   }
   //open filename
-  printf("filename: \'%s\'", filename);
+  printf("filename: \'%s\'\n", filename);
   int check = open(filename, O_RDONLY, 0644);
   if (check == -1) {
     printf("opening your file failed, strerror: %s\n", strerror(errno));
@@ -250,7 +250,7 @@ int less_than(char *input) {
   dup2(check, 0); //Turns stdin into this current process
   char command[256];
   strcpy(command, input_args[0]);
-  printf("command: \'%s\'", command);
+  printf("command: \'%s\'\n", command);
   single_space(command);
   //don't forget to switch back to normal!
   dup2(backup, 0);
