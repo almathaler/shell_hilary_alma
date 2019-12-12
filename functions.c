@@ -274,20 +274,20 @@ int pipe_(char *input) {
   FILE *p;
   p = popen(command1, "r");
   if (p == NULL) {
-    printf("Failed to open pipe");
+    printf("Failed to open pipe\n");
   } else {
-    printf("Opened pipe");
+    printf("Opened pipe\n");
   }
 
   //Reading from pipe
   char output[1000];
   char *out = fgets(output, 1000, p);
-  printf("Output from pipe: %s", out);
+  printf("Output from pipe: %s\n", out);
 
   //Closing pipe
   int check = pclose(p);
   if (check == -1) {
-    printf("Failed to close pipe");
+    printf("Failed to close pipe\n");
   }
 
   return 0;
