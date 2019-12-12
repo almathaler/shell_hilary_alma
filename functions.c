@@ -27,7 +27,7 @@ int execute_type(char *input){
       less_than(input);
       break;
     case 4:
-      pipe(input);
+      pipe_(input);
       break;
     case 5:
       double_greater_than(input);
