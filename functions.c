@@ -252,7 +252,7 @@ int less_than(char *input) {
     printf("uh oh, strip_whitespace failed...\n");
   }
   //open filename
-  printf("filename: \'%s\'\n", filename);
+  //printf("filename: \'%s\'\n", filename);
   int check = open(filename, O_RDONLY, 0644);
   if (check == -1) {
     printf("opening your file failed, strerror: %s\n", strerror(errno));
@@ -262,13 +262,49 @@ int less_than(char *input) {
   dup2(check, 0); //Turns stdin into this current process
   char command[256];
   strcpy(command, input_args[0]);
-  printf("command: \'%s\'\n", command);
+  //printf("command: \'%s\'\n", command);
   execute_type(command);
   //don't forget to switch back to normal!
   dup2(backup, 0);
   return 0;
 }
 
+int pipe_(char *input){
+  char **input_args = parse_input(input, "|\n");
+  char *command1 = malloc(strlen(input_args[0]) + 1);
+  if(strip_whitespace(input_args[0], command1)){
+    printf("uh oh, strip_whitespace failed...\n");
+  }
+  //printf("command1: \'%s\'\n", command1);
+  char *command2 = malloc(strlen(input_args[1]) + 1);
+  if(strip_whitespace(input_args[1], command2)){
+    printf("uh oh, strip_whitespace failed...\n");
+  }
+  //printf("command2: \'%s\'\n", command2);
+
+
+  int fds[2];
+  if(pipe(fds)){ //fd[0] is read and fd[1] is write?
+    printf("error with pipe, errno: %d\n", errno);
+    exit(0);
+  }
+  //command 1 writes into pipe via fd[1]
+  int backup = dup(1); //Duplicates stdout
+  dup2(fds[1], 1); //Turns stdout into the write end of the pipe
+  execute_type(command1);
+  //don't forget to switch back to normal!
+  dup2(backup, 1);
+  close(fds[1]); //no longer gonna write in this pipe
+
+  //now command 2 should read out of pipe
+  backup = dup(0);
+  dup2(fds[0], 0);
+  execute_type(command2);
+  dup2(backup, 0);
+  close(fds[0]);
+  return 0;
+}
+/*
 int pipe_(char *input) {
   char **input_args = parse_input(input, "|\n");
   char *command1 = malloc(strlen(input_args[0]) + 1);
@@ -304,6 +340,6 @@ int pipe_(char *input) {
   }
 
   //Use popen with w as the mode for command2?
-
   return 0;
 }
+*/
