@@ -259,13 +259,15 @@ int less_than(char *input) {
 
 int pipe_(char *input) {
   char **input_args = parse_input(input, "|\n");
-  char *command1 = malloc(strlen(input_args[1]) + 1);
-  if(strip_whitespace(input_args[1], command1)){
+  char *command1 = malloc(strlen(input_args[0]) + 1);
+  if(strip_whitespace(input_args[0], command1)){
     printf("uh oh, strip_whitespace failed...\n");
   }
   printf("command1: \'%s\'\n", command1);
-  char command2[256];
-  strcpy(command2, input_args[1]);
+  char *command2 = malloc(strlen(input_args[1]) + 1);
+  if(strip_whitespace(input_args[1], command2)){
+    printf("uh oh, strip_whitespace failed...\n");
+  }
   printf("command2: \'%s\'\n", command2);
 
   FILE *p;
