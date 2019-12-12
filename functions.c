@@ -266,5 +266,8 @@ int pipe_(char *input) {
   strcpy(command2, input_args[1]);
   printf("command2: \'%s\'\n", command2);
 
+  FILE *p;
+  p = popen(command1, "r");
+
   return 0;
 }
