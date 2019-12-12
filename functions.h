@@ -58,6 +58,9 @@ int colon_(char *input); //REMEMBER THAT COLON STUFF (sorry for caps) might have
 int greater_than(char *input);
 /*
 */
+int double_greater_than(char *input);
+/*
+*/
 int less_than(char *input);
 /*
 */

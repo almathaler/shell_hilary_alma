@@ -29,6 +29,9 @@ int execute_type(char *input){
     case 4:
       //pipe();
       break;
+    case 5:
+      double_greater_than(input);
+      break;
     default:
       printf("Command format cannot be executed. Quitting...\n");
       exit(1);
@@ -106,8 +109,12 @@ int type_arg(char * input){
   //based on these numbers, 'execute_type' takes to a different funciton
   if(!(strchr(input, ';') == NULL)){
     return 1; //return this first so that if there's like ls|wc ; cd, won't accidentally go into | pile
-  }else if(!(strchr(input, '>') == NULL)){
-    return 2;
+  }else if(!(strchr(input, '>') == NULL)){ //return 2 or 5, yes not intuitive but added >> at end
+    if (strchr(input, '>') == strrchr(input, '>')){
+      return 2;
+    }else{
+      return 5; //this means there is >>, also can't do multiple redirects like a > b > c
+    }
   }else if(!(strchr(input, '<') == NULL)){
     return 3;
   }else if(!(strchr(input, '|') == NULL)){
@@ -164,6 +171,7 @@ int colon_(char *input){
 }
 
 int greater_than(char *input) {
+  //as of now, if '>>' then will just treat as '>'
   char **input_args = parse_input(input, ">\n");
   //should have 2 input_args, one that is command to be carried out and the other is file that output is written into
   //create filename char to hold filename after it's modified
@@ -176,6 +184,39 @@ int greater_than(char *input) {
   int check = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
   if (check == -1) {
     printf("opening your file failed, strerror: %s\n", strerror(errno));
+  }
+  //now make stdout's fd point to our specified file
+  int backup = dup(1); //Duplicates stdout
+  dup2(check, 1); //Turns stdout into this current process
+  char command[256];
+  strcpy(command, input_args[0]);
+  //i don't remember why we made a char buffer, but yea carry out that command (stuff will be written into filename)
+  single_space(command);
+  //don't forget to switch back to normal!
+  dup2(backup, 1);
+  return 0;
+}
+
+int double_greater_than(char *input){
+  //as of now, if '>>' then will just treat as '>'
+  char **input_args = parse_input(input, ">\n");
+  //should have 2 input_args, one that is command to be carried out and the other is file that output is written into
+  //create filename char to hold filename after it's modified
+  char *filename = malloc(strlen(input_args[1]) + 1);
+  //do whitespace w input_args[1] and filename (must have given filename memory before hand)
+  if(strip_whitespace(input_args[1], filename)){
+    printf("uh oh, strip_whitespace failed...\n");
+  }
+  //open filename
+  int check = open(filename, O_WRONLY | O_CREAT | O_EXCL | O_APPEND, 0644);
+  printf("opened: \"%s\"\tcheck: %d\n", filename, check);
+  if (check == -1) {
+    //printf("opening your file failed, strerror: %s\n", strerror(errno));
+    //might mean file exists, try again without the O_CREAT and check again
+    check = open(filename, O_WRONLY | O_APPEND);
+    if (check == -1){
+      printf("opening your file failed, strerror: %s\n", strerror(errno));
+    }
   }
   //now make stdout's fd point to our specified file
   int backup = dup(1); //Duplicates stdout
