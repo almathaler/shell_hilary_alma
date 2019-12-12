@@ -282,6 +282,7 @@ int pipe_(char *input) {
   //Reading from pipe
   char output[1000];
   char *out = fgets(output, 1000, p);
+  //Issue with fgets stopping when it gets to a newline character
   printf("Output from pipe: %s\n", out);
 
   //Closing pipe
@@ -289,6 +290,8 @@ int pipe_(char *input) {
   if (check == -1) {
     printf("Failed to close pipe\n");
   }
+
+  //Use popen with w as the mode for command2?
 
   return 0;
 }
