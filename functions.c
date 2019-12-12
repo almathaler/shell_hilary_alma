@@ -209,7 +209,7 @@ int double_greater_than(char *input){
   }
   //open filename
   int check = open(filename, O_WRONLY | O_CREAT | O_EXCL | O_APPEND, 0644);
-  printf("opened: \"%s\"\tcheck: %d\n", filename, check);
+  //printf("opened: \"%s\"\tcheck: %d\n", filename, check);
   if (check == -1) {
     //printf("opening your file failed, strerror: %s\n", strerror(errno));
     //might mean file exists, try again without the O_CREAT and check again
