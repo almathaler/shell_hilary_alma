@@ -1,25 +1,18 @@
-DWSH
-by JonAlf Dyrland-Weaver and Neeraj Bhatia
+AlHil Shell
+by Hilary Zen and Alma Thaler
 
 Features:
-	Forks and executes commands!
-	Parses multiple commands on one line!
-	Redirects using >, <!
-	Guaranteed to regrow hair!
-	Can summon a winged unicorn for fast & magical transit!
-
+	* Can process any amount of whitespace (!!) and operators such as ;;
+  * simple commands without operators (cmd arg1 arg2 etc)
+  * commands of any form seperated by colon (cmd1<file;cmd2 args ; cmd3)
+  * redirection (<, > and >>)
+  * piping (only one at a time though please)
 Attempted:
-	The following did not end up working, but have been left in the code, commented out.
-	Could not get pipes to work
-	Tried to implement >>, but it kept overwriting the file
-	Looked at replacing ~/ with home directory, got seg faults
-	Was unable to have the "puppy" command produce a puppy and eject it from the optical drive.
+	Intended to shorten cwd@, didn't get to it
 
 Bugs:
-	Putting two ;'s next to each other will break the parser
+  * can only pipe cmd1 | cmd2, no args please
 	Redirecting to a file that does not exist occasionally does not work.
-	Hair regrowth function may result in a seg fault.
-	Occasionally, the unicorn command will fail, opening a great chasm in the earth and summoning the demon Beelzebub, who will proceeded to unleash his wrath and begin his reign of terror.
 
 Files & Function Headers:
 parse.c
@@ -57,4 +50,4 @@ dwsh.c
 	Handles the forking an executing of commands...
 
 magical.c
-	UNOCORNS!	
+	UNOCORNS!

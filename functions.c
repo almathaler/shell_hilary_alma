@@ -139,6 +139,7 @@ int type_arg(char * input){
 
 int single_space(char * input){
   char **input_args = parse_input(input, " \t\n");
+  //printf("in single space, args: \"%s\"\t\"%s\"\n", input_args[0], input_args[1]);
   //first see if we are exiting or cding
   if (strcmp(input, "") == 0){
     return 0;
@@ -209,6 +210,7 @@ int greater_than(char *input) {
   execute_type(command); //so if it's double
   //don't forget to switch back to normal!
   dup2(backup, 1);
+  free(filename);
   return 0;
 }
 
@@ -242,6 +244,7 @@ int double_greater_than(char *input){
   execute_type(command); //so if it's a a < b > c
   //don't forget to switch back to normal!
   dup2(backup, 1);
+  free(filename);
   return 0;
 }
 
@@ -269,15 +272,18 @@ int less_than(char *input) {
   execute_type(command);
   //don't forget to switch back to normal!
   dup2(backup, 0);
+  free(filename);
   return 0;
 }
 
 int pipe_(char *input){
   char **input_args = parse_input(input, "|\n");
   char *command1 = malloc(strlen(input_args[0]) + 1);
-  if(strip_whitespace(input_args[0], command1)){
+
+  if(strip_whitespace(input_args[0], command1)){ //issue is if in pipe you do 'ls -l | wc', this will make ls to be 'ls-l'
     printf("uh oh, strip_whitespace failed...\n");
   }
+
   //printf("command1: \'%s\'\n", command1);
   char *command2 = malloc(strlen(input_args[1]) + 1);
   if(strip_whitespace(input_args[1], command2)){
@@ -295,6 +301,7 @@ int pipe_(char *input){
   int backup = dup(1); //Duplicates stdout
   dup2(fds[1], 1); //Turns stdout into the write end of the pipe
   execute_type(command1);
+  //printf("executed command1: %s\n", command1);
   //don't forget to switch back to normal!
   dup2(backup, 1);
   close(fds[1]); //no longer gonna write in this pipe
@@ -303,8 +310,11 @@ int pipe_(char *input){
   backup = dup(0);
   dup2(fds[0], 0);
   execute_type(command2);
+  //printf("executed command2: %s\n", command2);
   dup2(backup, 0);
   close(fds[0]);
+  free(command1);
+  free(command2);
   return 0;
 }
 /*
