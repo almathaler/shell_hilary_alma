@@ -1,31 +1,60 @@
-# shell_hilary_alma
-our shell.git project
+DWSH
+by JonAlf Dyrland-Weaver and Neeraj Bhatia
 
-     
-   ### A description of what features your shell implements
-    * command input of any whitespace (cmd1 ;cmd2, cmd1   ;  cmd2, etc)
-    * simple single spaced commands (ls -a -l) [but can be ls   -a -l if you want]
-    * semicoloned commands
-    * > and >> redirection
-   ### A description of what features you attempted to implement but were unsuccessful
-    as of 12/11:
-    * <
-    * pipes
-   ### Any bugs or things you want me to know about your program
-        
-   ### A copy of every function header
-    char ** parse_input(char *input, char *delimiter);
-    int strip_whitespace(char *input, char *output);
-    int execute();
-    void print_prompt();
-    int type_arg(char * input);
-    int single_space(char * input);
-    int colon_(char *input); 
-    int greater_than(char *input);
-    int double_greater_than(char *input);
-    int less_than(char *input);
-    int pipe_(char *input);
-    static void sighandler(int signo);
-    int execute_type(char *input);
-    
-   
+Features:
+	Forks and executes commands!
+	Parses multiple commands on one line!
+	Redirects using >, <!
+	Guaranteed to regrow hair!
+	Can summon a winged unicorn for fast & magical transit!
+
+Attempted:
+	The following did not end up working, but have been left in the code, commented out.
+	Could not get pipes to work
+	Tried to implement >>, but it kept overwriting the file
+	Looked at replacing ~/ with home directory, got seg faults
+	Was unable to have the "puppy" command produce a puppy and eject it from the optical drive.
+
+Bugs:
+	Putting two ;'s next to each other will break the parser
+	Redirecting to a file that does not exist occasionally does not work.
+	Hair regrowth function may result in a seg fault.
+	Occasionally, the unicorn command will fail, opening a great chasm in the earth and summoning the demon Beelzebub, who will proceeded to unleash his wrath and begin his reign of terror.
+
+Files & Function Headers:
+parse.c
+	Handles all line parsing fucntions
+	/*======== int count_tokens() ==========
+	Inputs:  char *line
+        	  char delim
+	Returns: Number of tokens in line separated by delim
+
+	Counts the number of times the character delim appears in the
+	 string line
+	The number of tokens is 1 more than the number of appearences
+	of delim
+	If delim does not appear, 1 is returned
+	====================*/
+
+	/*======== char ** parse_line() ==========
+	Inputs:  char *line
+	Returns: Array of strings where each entry is a token
+	separated by delim
+
+	If line contains multiple tokens separated by delim, this
+	function will put each token into an array of strings
+	====================*/
+
+	/*======== char * trim() ==========
+	Inputs:  char *line
+	Returns: Pointer to the beginning of line
+
+	Removes leading and trailing whitespace on the string line.
+	Terminating '\0' is placed at a new location if necessary.
+	====================*/
+
+dwsh.c
+	Handles the forking an executing of commands...
+
+magical.c
+	UNOCORNS!	

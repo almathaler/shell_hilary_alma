@@ -140,6 +140,9 @@ int type_arg(char * input){
 int single_space(char * input){
   char **input_args = parse_input(input, " \t\n");
   //first see if we are exiting or cding
+  if (strcmp(input, "") == 0){
+    return 0;
+  }
   if (strcmp("exit", input_args[0]) == 0){
     exit(0); // exit the program
   }

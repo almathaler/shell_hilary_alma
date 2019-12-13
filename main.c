@@ -15,10 +15,10 @@ static void sighandler(int signo){
   }
 }
 
-
 int main(){
   signal(SIGSEGV, sighandler);
   while(1){
+    //print_prompt();
     execute();
   }
   return 0;
