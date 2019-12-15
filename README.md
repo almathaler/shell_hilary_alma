@@ -13,11 +13,11 @@ Attempted:
 
 Bugs:
   	* can only pipe cmd1 | cmd2, no args please
-	
+
 Files & Function Headers:
 functions.c
 	Just does everything
-	
+
 	/* ======== char ** parse_input() ========
 	Inputs: char *input, char *delimiter
 	Returns: Pointer to array of inputs seperated by given delimiter
@@ -32,99 +32,89 @@ functions.c
 	whitespace removed. For colon for some reason it's fine to just parse and then call single_space on the args, because
 	single_space calls this on it's individual args)
 	==============*/
-	
+
 	/* ======== int execute() ========
-	Inputs: 
+	Inputs:
 	Returns: 0 upon success
 	Very simple, just uses fgets to take in input and the calls execute_type. Is the main function that process returns to
 	after other methods conclude (well in main.c, main has a while(1) loop that continuously calls execute)
 	==============*/
 
 	/* ======== void print_prompt() ========
-	Inputs: 
-	Returns: 
+	Inputs:
+	Returns:
 	Prints the CWD followed by @
 	==============*/
-	
+
 	/* ======== int execute_type() ========
 	Inputs: char *input
 	Returns: 0 on success
 	One big switch statement. Runs type_arg, then chooses which function to call based on the type.  
 	==============*/
-	
+
 	/* ======== int type_arg() ========
 	Inputs: char * input
 	Returns: Integer value determined by type of input
 	One big switch statement. Colon takes precedence (because colon just splits into two calls of execute_type after you
 	seperate based on ;), then checks for the other operators (<, >, >>, |) and finally checks for ' '. Uses strcmp.
-	Default is return 0 (no input, ask for something again) 
+	Default is return 0 (no input, ask for something again)
 	==============*/
 
 	/* ======== int single_space(char * input); ========
 	Inputs: char * input
-	Returns: Integer value determined by type of input
-	One big switch statement. Colon takes precedence (because colon just splits into two calls of execute_type after you
-	seperate based on ;), then checks for the other operators (<, >, >>, |) and finally checks for ' '. Uses strcmp.
-	Default is return 0 (no input, ask for something again) 
+	Returns: 0 on success
+	Uses parse_input to split the input by its whitespace. Checks if the input is empty, exit, or cd, and runs special commands (exit or chdir). For other commands, the function forks and uses execvp to run the command.
 	==============*/
-	
-	/* ======== int colon_(char *input);   ========
+
+	/* ======== int colon_(char *input); ========
 	Inputs: char * input
-	Returns: Integer value determined by type of input
-	One big switch statement. Colon takes precedence (because colon just splits into two calls of execute_type after you
-	seperate based on ;), then checks for the other operators (<, >, >>, |) and finally checks for ' '. Uses strcmp.
-	Default is return 0 (no input, ask for something again) 
+	Returns: 0 on success
+	Splits the input into its separate commands with parse_input. For each command, the function copies it into a char array and sends it to execute_type to handle it.
 	==============*/
-	
+
 	/* ======== int greater_than(char *input); ========
 	Inputs: char * input
-	Returns: Integer value determined by type of input
-	One big switch statement. Colon takes precedence (because colon just splits into two calls of execute_type after you
-	seperate based on ;), then checks for the other operators (<, >, >>, |) and finally checks for ' '. Uses strcmp.
-	Default is return 0 (no input, ask for something again) 
+	Returns: 0 on success
+	Uses parse_input to split the input into the command and the file. After running strip_whitespace and opening the file (if the file already exists, we overwrite it), we use dup and dup2 to change stdout to our new file descriptor. After running the command with execute_type, we switch process 1 back to stdout.
 	==============*/
-	
+
 	/* ======== int double_greater_than(char *input); ========
 	Inputs: char * input
-	Returns: Integer value determined by type of input
-	One big switch statement. Colon takes precedence (because colon just splits into two calls of execute_type after you
-	seperate based on ;), then checks for the other operators (<, >, >>, |) and finally checks for ' '. Uses strcmp.
-	Default is return 0 (no input, ask for something again) 
+	Returns: 0 on success
+	Follows the same steps as greater_than. However, the function appends to files instead of overwriting, and doesn't create a new file if one already exists.
 	==============*/
-	
+
 	/* ======== int less_than(char *input); ========
 	Inputs: char * input
 	Returns: Integer value determined by type of input
 	One big switch statement. Colon takes precedence (because colon just splits into two calls of execute_type after you
 	seperate based on ;), then checks for the other operators (<, >, >>, |) and finally checks for ' '. Uses strcmp.
-	Default is return 0 (no input, ask for something again) 
+	Default is return 0 (no input, ask for something again)
 	==============*/
-	
+
 	/* ======== int pipe_(char *input); ========
 	Inputs: char * input
 	Returns: Integer value determined by type of input
 	One big switch statement. Colon takes precedence (because colon just splits into two calls of execute_type after you
 	seperate based on ;), then checks for the other operators (<, >, >>, |) and finally checks for ' '. Uses strcmp.
-	Default is return 0 (no input, ask for something again) 
+	Default is return 0 (no input, ask for something again)
 	==============*/
-	
+
 	/* ======== static void sighandler(int signo); ========
 	Inputs: char * input
 	Returns: Integer value determined by type of input
 	One big switch statement. Colon takes precedence (because colon just splits into two calls of execute_type after you
 	seperate based on ;), then checks for the other operators (<, >, >>, |) and finally checks for ' '. Uses strcmp.
-	Default is return 0 (no input, ask for something again) 
+	Default is return 0 (no input, ask for something again)
 	==============*/
 
 
 main.c
 	Just has main
 	/* ======== int main(); ========
-	Inputs: 
+	Inputs:
 	Returns: 0 on success
 	while (1){
 		execute();
 	}
 	==============*/
-	
-
