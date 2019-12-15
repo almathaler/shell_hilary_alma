@@ -1,4 +1,5 @@
 AlHil Shell
+
 by Hilary Zen and Alma Thaler
 
 Features:
@@ -17,7 +18,9 @@ Bugs:
   	* did not find any bugs using input test
 
 Files & Function Headers:
+
 functions.c
+	
 	Just does everything
 
 	/* ======== char ** parse_input() ========
@@ -115,7 +118,8 @@ functions.c
 	==============*/
 
 
-main.c
+main.c:
+
 	Just has main
 	
 	/* ======== int main(); ========
