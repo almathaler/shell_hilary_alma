@@ -86,18 +86,14 @@ functions.c
 
 	/* ======== int less_than(char *input); ========
 	Inputs: char * input
-	Returns: Integer value determined by type of input
-	One big switch statement. Colon takes precedence (because colon just splits into two calls of execute_type after you
-	seperate based on ;), then checks for the other operators (<, >, >>, |) and finally checks for ' '. Uses strcmp.
-	Default is return 0 (no input, ask for something again)
+	Returns: 0 on success
+	Splits the input into the command and the filename, then opens the file with O_RDONLY. We then use dup and dup2 to switch stdin with the descriptor of the file we just opened. After using execute_type to run the command, we move stdin back to 0.
 	==============*/
 
 	/* ======== int pipe_(char *input); ========
 	Inputs: char * input
-	Returns: Integer value determined by type of input
-	One big switch statement. Colon takes precedence (because colon just splits into two calls of execute_type after you
-	seperate based on ;), then checks for the other operators (<, >, >>, |) and finally checks for ' '. Uses strcmp.
-	Default is return 0 (no input, ask for something again)
+	Returns: 0 on success
+	The function uses parse_input to get the two commands, and removes the whitespace. (The commands cannot have arguments, because strip_whitespace removes the spaces in between them.) We then create an unnamed pipe, and use dup and dup2 to switch stdout with the pipe's write end. After executing command 1, which sends its output to the pipe, we move stdout back and close the write end. We then change stdin to the read end of the pipe and execute the second command, which takes its input from the pipe and prints the result to the terminal.
 	==============*/
 
 	/* ======== static void sighandler(int signo); ========
