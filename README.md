@@ -2,16 +2,19 @@ AlHil Shell
 by Hilary Zen and Alma Thaler
 
 Features:
+
 	* Can process any amount of whitespace (!!) and operators such as ;;
  	* simple commands without operators (cmd arg1 arg2 etc)
   	* commands of any form seperated by colon (cmd1<file;cmd2 args ; cmd3)
 	* redirection (<, > and >>)
   	* piping (only one at a time though please)
 Attempted:
+
 	* Intended to short the user/user/etc/etc@, didn't get to it
 	* Intended to fix pipe bug described below
 
 Bugs:
+
   	* can only pipe cmd1 | cmd2, no args please
 
 Files & Function Headers:
@@ -63,37 +66,48 @@ functions.c
 	/* ======== int single_space(char * input); ========
 	Inputs: char * input
 	Returns: 0 on success
-	Uses parse_input to split the input by its whitespace. Checks if the input is empty, exit, or cd, and runs special commands (exit or chdir). For other commands, the function forks and uses execvp to run the command.
+	Uses parse_input to split the input by its whitespace. Checks if the input is empty, exit, or cd, and runs special
+	commands (exit or chdir). For other commands, the function forks and uses execvp to run the command.
 	==============*/
 
 	/* ======== int colon_(char *input); ========
 	Inputs: char * input
 	Returns: 0 on success
-	Splits the input into its separate commands with parse_input. For each command, the function copies it into a char array and sends it to execute_type to handle it.
+	Splits the input into its separate commands with parse_input. For each command, the function copies it into a char
+	array and sends it to execute_type to handle it.
 	==============*/
 
 	/* ======== int greater_than(char *input); ========
 	Inputs: char * input
 	Returns: 0 on success
-	Uses parse_input to split the input into the command and the file. After running strip_whitespace and opening the file (if the file already exists, we overwrite it), we use dup and dup2 to change stdout to our new file descriptor. After running the command with execute_type, we switch process 1 back to stdout.
+	Uses parse_input to split the input into the command and the file. After running strip_whitespace and opening the file
+	(if the file already exists, we overwrite it), we use dup and dup2 to change stdout to our new file descriptor. After
+	running the command with execute_type, we switch process 1 back to stdout.
 	==============*/
 
 	/* ======== int double_greater_than(char *input); ========
 	Inputs: char * input
 	Returns: 0 on success
-	Follows the same steps as greater_than. However, the function appends to files instead of overwriting, and doesn't create a new file if one already exists.
+	Follows the same steps as greater_than. However, the function appends to files instead of overwriting, and doesn't
+	create a new file if one already exists.
 	==============*/
 
 	/* ======== int less_than(char *input); ========
 	Inputs: char * input
 	Returns: 0 on success
-	Splits the input into the command and the filename, then opens the file with O_RDONLY. We then use dup and dup2 to switch stdin with the descriptor of the file we just opened. After using execute_type to run the command, we move stdin back to 0.
+	Splits the input into the command and the filename, then opens the file with O_RDONLY. We then use dup and dup2 to
+	switch stdin with the descriptor of the file we just opened. After using execute_type to run the command, we move
+	stdin back to 0.
 	==============*/
 
 	/* ======== int pipe_(char *input); ========
 	Inputs: char * input
 	Returns: 0 on success
-	The function uses parse_input to get the two commands, and removes the whitespace. (The commands cannot have arguments, because strip_whitespace removes the spaces in between them.) We then create an unnamed pipe, and use dup and dup2 to switch stdout with the pipe's write end. After executing command 1, which sends its output to the pipe, we move stdout back and close the write end. We then change stdin to the read end of the pipe and execute the second command, which takes its input from the pipe and prints the result to the terminal.
+	The function uses parse_input to get the two commands, and removes the whitespace. (The commands cannot have
+	arguments, because strip_whitespace removes the spaces in between them.) We then create an unnamed pipe, and use dup
+	and dup2 to switch stdout with the pipe's write end. After executing command 1, which sends its output to the pipe, we
+	move stdout back and close the write end. We then change stdin to the read end of the pipe and execute the second
+	command, which takes its input from the pipe and prints the result to the terminal.
 	==============*/
 
 	/* ======== static void sighandler(int signo); ========
@@ -106,6 +120,7 @@ functions.c
 
 
 main.c
+
 	Just has main
 	/* ======== int main(); ========
 	Inputs:
