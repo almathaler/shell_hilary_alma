@@ -45,12 +45,19 @@ int strip_whitespace(char *input, char *output){
     return 0; //don't touch it
   }
   char *out = output, *in = input;
+  int counter = 0;
+  int max = strlen(input);
   while(*in != '\0'){
     if (!isspace(*in)){
       *out = *in;
       out++;
-    }
+    }else if(counter > 0 && counter < (strlen(input) - 1)  //if we aren't going to access null piece of mem
+            && (isspace(*in) && !isspace(in[1]) && !isspace(in[-1]))){ //and it's just a single space then keep it
+      *out = *in;
+      out++;
+    }//while it's not a space OR while it's a single space
     in++;
+    counter++;
   }
   *out = '\0';
   //printf("input: \"%s\"\toutput: \"%s\"\n", input, output);
