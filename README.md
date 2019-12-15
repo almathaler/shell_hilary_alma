@@ -7,15 +7,14 @@ Features:
  	* simple commands without operators (cmd arg1 arg2 etc)
   	* commands of any form seperated by colon (cmd1<file;cmd2 args ; cmd3)
 	* redirection (<, > and >>)
-  	* piping (only one at a time though please)
+  	* piping (can pipe "cmd1 arg1 | cmd2" and other variants, does not just have to be argument-less! 
 Attempted:
 
 	* Intended to short the user/user/etc/etc@, didn't get to it
-	* Intended to fix pipe bug described below
 
 Bugs:
 
-  	* can only pipe cmd1 | cmd2, no args please
+  	* did not find any bugs using input test
 
 Files & Function Headers:
 functions.c
@@ -29,11 +28,8 @@ functions.c
 	/* ======== int strip_whitespace() ========
 	Inputs: char *input, char *output
 	Returns: 0 upon success
-	Given the input string, creates a char buffer and strips all whitespace, then copies that into output char* (should be
-	run after parsing input, parses all
-	so what's inbetween words too. this is why we are having issues with pipe where the parsed inputs shouldn't have the
-	whitespace removed. For colon for some reason it's fine to just parse and then call single_space on the args, because
-	single_space calls this on it's individual args)
+	Given the input string, creates a char buffer and strips all trailing and leadingwhitespace, then copies that into
+	output char* 
 	==============*/
 
 	/* ======== int execute() ========
@@ -120,8 +116,8 @@ functions.c
 
 
 main.c
-
 	Just has main
+	
 	/* ======== int main(); ========
 	Inputs:
 	Returns: 0 on success
